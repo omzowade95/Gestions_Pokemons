@@ -10,7 +10,7 @@ export class PokemonService {
   }
 
   getPokemonById(pokemonId: number): Pokemon | undefined{
-    return this.getPokemonList().find(pokemon => pokemonId == pokemonId);
+    return POKEMONS.find(pokemon => pokemon.id == pokemonId);
   }
 
   getPokemonTypeList(): string[]{
