@@ -8,18 +8,18 @@ import {PokemonService} from "../services/pokemon.service";
   templateUrl: './detail-pokemon.component.html',
 })
 export class DetailPokemonComponent implements OnInit {
-  pokemonList: Pokemon[];
   pokemon: Pokemon | undefined;
   constructor(private route: ActivatedRoute,
               private router: Router,
               private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
-    this.pokemonList = this.pokemonService.getPokemonList();
     const pokemonId: string | null = this.route.snapshot.paramMap.get('id');
 
     if(pokemonId)
-      this.pokemon = this.pokemonService.getPokemonById(+pokemonId);
+      this.pokemonService.getPokemonById(+pokemonId).subscribe(
+          pokemon => this.pokemon = pokemon
+      );
     else
       this.pokemon = undefined;
   }
@@ -30,6 +30,10 @@ export class DetailPokemonComponent implements OnInit {
 
   goToEditPokemon(pokemon: Pokemon): void{
     this.router.navigate(['/edit/pokemon',pokemon.id]);
+  }
+
+  deletePokemon(pokemon: Pokemon): void{
+    this.pokemonService.deletePokemon(pokemon).subscribe(() => this.goToPokemonList());
   }
 
 }
